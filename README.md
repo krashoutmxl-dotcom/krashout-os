@@ -1,21 +1,20 @@
 # Krashout OS
 
-Centro de mando de Krashout (Mexicali): bitácora por objetivos, urgencias y por comprar.
+Centro de mando de Krashout (Mexicali).
 
-- Sitio: GitHub Pages (este repo).
-- Datos: Supabase con inicio de sesión por correo y reglas RLS (cada cuenta solo ve sus filas).
-- Sin Supabase configurado corre en **modo prueba** (se guarda solo en el aparato).
+**Cómo se usa:** a la izquierda hay 3 bolitas.
+- **Plan** → pica el plan → salen los objetivos → pica uno → salen sus pasos (rojo falta, verde cumplido).
+- **Tienda** → Inventario, Venta rápida (menudeo/mayoreo) y Ventas.
+- **Centro** → Urgencias, Por comprar, Conectores y Seguridad.
 
-## Configurar Supabase
-1. Crear proyecto en supabase.com.
-2. SQL Editor → pegar `supabase/schema.sql` → Run.
-3. Authentication → Sign In / Providers → apagar "Allow new users to sign up".
-4. Authentication → Users → Add user → el correo del dueño.
-5. Authentication → URL Configuration → Site URL y Redirect URL = el link de GitHub Pages.
-6. Pegar Project URL y anon key en `config.js`. **Nunca** la service_role key.
+En el cel las bolitas quedan abajo.
 
 ## Seguridad
-- Todo texto se pinta como texto (nunca HTML), con límites de tamaño y filtro de caracteres invisibles.
-- Content-Security-Policy: solo scripts propios; conexiones solo a Supabase.
-- Librería de Supabase servida desde este repo con verificación SRI.
-- Revisado con los agentes `frontend-security-coder` y `security-auditor` (wshobson/agents).
+- Usuario **Panini** con contraseña (la pone él la primera vez; no se guarda en ningún lado).
+- Datos cifrados AES-256-GCM en el aparato; llave PBKDF2-SHA256 (310 000 vueltas) a partir de la contraseña.
+- 5 intentos fallidos = bloqueo que va creciendo. Cierre automático a los 30 min sin uso.
+- Nada de `innerHTML`: todo texto se pinta como texto. CSP estricta: sin scripts de fuera, sin conexiones a otros servidores.
+- Agentes de seguridad de GitHub en `.claude/agents` (wshobson/agents y VoltAgent, licencia MIT en `.claude/licenses`).
+
+## Pendiente
+- Sincronizar compu y cel con Supabase (`supabase/schema.sql` queda listo para cuando se cree la cuenta).
