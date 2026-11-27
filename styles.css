@@ -222,3 +222,10 @@ ul.clean li{margin:4px 0}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .ring.tile{flex-direction:row}
 .ocard,.tile,.ditem,.urg{text-decoration:none}
+
+.shopgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.shopcap{display:flex;flex-direction:column;gap:6px;color:var(--ink);text-decoration:none;padding:10px;border:1px solid #26262b;border-radius:12px}
+.shopcap:hover{border-color:#45454d}
+.shopcap img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:8px}
+.shopcap b{font-size:13px;line-height:1.3;font-weight:600}
+.shopcap small{color:var(--mut)}

@@ -162,7 +162,7 @@ let bolita = null;
 const routeTo = h_ => { if(location.hash === h_) route(); else location.hash = h_; };
 window.addEventListener('hashchange', () => { if(KEY) route(); });
 function parse(){ const p = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent); return {v: p[0] || '', a: p[1] || '', b: p[2] || ''}; }
-const BOL = {plan: ['plan', 'objs'], tienda: ['inventario', 'venta', 'ventas'], centro: ['urgencias', 'comprar', 'conectores', 'seguridad']};
+const BOL = {plan: ['plan', 'objs'], tienda: ['shopify', 'inventario', 'venta', 'ventas'], centro: ['urgencias', 'comprar', 'conectores', 'seguridad']};
 const bolitaOf = v => Object.keys(BOL).find(k => BOL[k].includes(v)) || null;
 
 for(const b of document.querySelectorAll('.bolita')) b.addEventListener('click', () => {
@@ -196,7 +196,8 @@ function renderDrawer(){
         inp = h('input', {placeholder: 'Nuevo plan', 'aria-label': 'Nuevo plan', maxlength: LIM.name, autocomplete: 'off'}), h('button', {class: 'btn', type: 'submit'}, '+')));
   } else if(bolita === 'tienda'){
     const tv = todaySales(), tt = tv.reduce((a, v) => a + v.total, 0), pz = D.inv.reduce((a, p) => a + p.stock, 0);
-    dr.replaceChildren(h('h2', null, 'Tienda'), h('p', {class: 'dsub'}, 'Inventario y ventas.'),
+    dr.replaceChildren(h('h2', null, 'Tienda'), h('p', {class: 'dsub'}, 'Shopify, inventario y ventas.'),
+      ditem('#/shopify', I.cart, 'Shopify', SHOP.gorras.length + ' gorras activas · ' + SHOP.ventas + ' pedidos'),
       ditem('#/inventario', I.box, 'Inventario', D.inv.length + ' productos · ' + pz + ' piezas'),
       ditem('#/venta', I.cash, 'Venta rápida', 'Menudeo y mayoreo'),
       ditem('#/ventas', I.plan, 'Ventas', 'Hoy: ' + tv.length + ' · ' + money(tt)));
@@ -216,6 +217,7 @@ function route(){
   let view;
   if(v === 'plan' && a && b) view = vObj(a, b);
   else if(v === 'plan' && a) view = vPlan(a);
+  else if(v === 'shopify') view = vShop();
   else if(v === 'inventario') view = vInv();
   else if(v === 'venta') view = vVenta();
   else if(v === 'ventas') view = vVentas();
@@ -233,6 +235,41 @@ function route(){
 const rerender = () => { const y = window.scrollY; route(); window.scrollTo(0, y); };
 const crumbs = (...parts) => h('nav', {class: 'crumbs', 'aria-label': 'Ruta'}, ...parts.flatMap((p, i) => [i ? h('span', {'aria-hidden': 'true'}, '›') : '', p[1] ? h('a', {href: p[1]}, p[0]) : h('span', null, p[0])]));
 const head = (title, sub, ...actions) => h('div', {class: 'ph'}, h('div', null, h('h1', null, title), sub ? h('p', null, sub) : ''), actions.length ? h('div', {class: 'row'}, ...actions) : '');
+
+
+/* ---------- Shopify (foto del estado tomada por Claude con el conector) ---------- */
+const SHOP = {
+  al: '26 nov 2026, 5:25 pm', tienda: 'https://myway-hats.myshopify.com', admin: 'https://admin.shopify.com/store/myway-hats',
+  wa: 'https://wa.me/526864306646', ventas: 0,
+  estado: [['ok', 'Tienda creada y conectada a Claude', 'Krashout (myway-hats). Plan Basic.'],
+    ['ok', '10 gorras activas a $700', 'Con sus fotos nuevas por ángulo, en Tienda online, Shop y Punto de venta.'],
+    ['ok', 'Diseño Opción C listo', 'Tema "Copia de Horizon": Krashout is here, WhatsApp, gorras en cuadro, marcas con fotos nuevas.'],
+    ['a', 'Falta: publicar el tema', 'Shopify no deja que Claude lo publique. Tú: Temas › Copia de Horizon › Publicar.'],
+    ['a', 'Falta: quitar la contraseña de la tienda', 'Tú: Tienda online › Preferencias › quitar contraseña. Sin eso nadie puede comprar.'],
+    ['no', 'Falta: stock por gorra', 'Ahorita las gorras no cuentan piezas. Dime cuántas tienes de cada una.'],
+    ['no', 'Falta: ventas en vivo aquí', 'Ocupa el servicio siempre prendido (Cloudflare). Mientras, Claude actualiza esta foto.']],
+  gorras: [{"t": "Barbas Hats x Lonche & Wilito \"Heartbreaker\"", "h": "barbas-hats-x-lonche-wilito-heartbreaker", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/heartbreaker-frente.jpg?width=160", "fotos": 3}, {"t": "Báez × Adriano Zendejas \"AB'z\"", "h": "baez-adriano-zendejas-abz", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/abz-frente.jpg?width=160", "fotos": 4}, {"t": "Báez × Adriano Zendejas \"Son of God\"", "h": "baez-adriano-zendejas-son-of-god", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/sonofgod-frente.jpg?width=160", "fotos": 1}, {"t": "Chucky Hats de terciopelo negro", "h": "chucky-hats-de-terciopelo-negro", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/chucky-34.jpg?width=160", "fotos": 2}, {"t": "Barbas Hats \"Born Crazy\"", "h": "barbas-hats-born-crazy", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/borncrazy-34.jpg?width=160", "fotos": 5}, {"t": "Gorra negra \"Ojo Azul\" con cristales", "h": "gorra-negra-ojo-azul-con-cristales", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ojoazul-34.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"FTR Camo\"", "h": "barbas-hats-ftr-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ftr-frente.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"Chrome I Blackout\"", "h": "barbas-hats-chrome-i-blackout", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/blackout-frente.jpg?width=160", "fotos": 3}, {"t": "31 Hats \"El Mago\"", "h": "31-hats-el-mago", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/elmago-frente.jpg?width=160", "fotos": 1}, {"t": "Barbas Hats \"B-Cross Camo\"", "h": "barbas-hats-b-cross-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/bcross-34.jpg?width=160", "fotos": 2}]
+};
+function vShop(){
+  const lbl = {ok: ['Listo', 'chip ok'], a: ['Te toca', 'chip'], no: ['Pendiente', 'chip no']};
+  const ext = (href, txt_, cls) => h('a', {class: cls || 'btn', href, target: '_blank', rel: 'noopener noreferrer'}, txt_);
+  const prendida = SHOP.estado.filter(e => e[0] !== 'ok').length === 0;
+  return h('div', null, crumbs(['Inicio', '#/'], ['Tienda'], ['Shopify']),
+    head('Shopify', 'Así está tu tienda. Datos del ' + SHOP.al + '.', ext(SHOP.tienda, 'Abrir tienda', 'btn lime'), ext(SHOP.admin, 'Abrir admin'), ext(SHOP.wa, 'WhatsApp')),
+    h('div', {class: 'grid g3'},
+      h('a', {class: 'card tile', href: SHOP.tienda, target: '_blank', rel: 'noopener noreferrer'}, h('span', {class: 'v'}, prendida ? 'Prendida' : 'Casi lista'), h('span', {class: 'l'}, prendida ? 'Ya se puede comprar' : 'Faltan ' + SHOP.estado.filter(e => e[0] !== 'ok').length + ' cosas (abajo)')),
+      h('a', {class: 'card tile', href: SHOP.admin + '/orders', target: '_blank', rel: 'noopener noreferrer'}, h('span', {class: 'v'}, String(SHOP.ventas)), h('span', {class: 'l'}, 'Pedidos en Shopify · ver pedidos')),
+      h('a', {class: 'card tile', href: SHOP.admin + '/products', target: '_blank', rel: 'noopener noreferrer'}, h('span', {class: 'v'}, String(SHOP.gorras.length)), h('span', {class: 'l'}, 'Gorras activas a $700 · ver productos'))),
+    h('section', {class: 'card'}, h('h2', {style: {'margin-bottom': '8px'}}, 'Salud de la tienda'),
+      ...SHOP.estado.map(([s, t, d]) => {
+        const href = /tema/.test(t) ? SHOP.admin + '/themes' : /contraseña/.test(t) ? SHOP.admin + '/online_store/preferences' : /stock/.test(t) ? SHOP.admin + '/products/inventory' : null;
+        const body = [h('span', {class: 'ub ' + (s === 'ok' ? 'g' : s === 'a' ? '' : 'n')}), h('div', null, h('h3', null, t, h('span', {class: lbl[s][1]}, lbl[s][0])), h('p', null, d))];
+        return href ? h('a', {class: 'urg', href, target: '_blank', rel: 'noopener noreferrer', style: {'text-decoration': 'none', color: 'inherit'}}, ...body) : h('div', {class: 'urg'}, ...body);
+      })),
+    h('section', {class: 'card'}, h('h2', {style: {'margin-bottom': '8px'}}, 'Gorras en la tienda'),
+      h('div', {class: 'shopgrid'}, ...SHOP.gorras.map(g => h('a', {class: 'shopcap', href: SHOP.tienda + '/products/' + g.h, target: '_blank', rel: 'noopener noreferrer'},
+        h('img', {src: g.img, alt: g.t, loading: 'lazy', width: '160', height: '160'}), h('b', null, g.t), h('small', null, '$700 · ' + g.fotos + (g.fotos === 1 ? ' foto' : ' fotos')))))));
+}
 
 /* ---------- Inicio ---------- */
 function nextStep(){ for(const p of D.planes) for(const o of p.objs){ const s = o.subs.find(x => !x.ok); if(s) return {p, o, s}; } return null; }
@@ -456,7 +493,7 @@ function vComprar(){
         h('p', {class: 'note'}, 'Esta lista es tuya. Antes de comprar algo en tu nombre te enseño qué y cuánto y espero tu "sí".'))));
 }
 function vCon(){
-  const C = [['Shopify', 'no', 'Pedidos, productos y stock real. Falta volver a iniciar sesión en el conector de Shopify en Claude.'], ['Gmail (krashoutmxl@gmail.com)', 'ok', 'Conectado a Claude. Siguiente: mostrar aquí los correos importantes.'], ['Meta: Facebook + Instagram @krashoutco', 'a', 'Portafolio, Página e Instagram listos. Falta conectar el canal de Shopify y las respuestas automáticas.'], ['TikTok', 'no', 'Falta crear la cuenta de negocio.'], ['Supabase (sincronizar compu y cel)', 'no', 'Falta crear la cuenta gratis. Mientras, todo se guarda cifrado en este aparato.']];
+  const C = [['Shopify', 'ok', 'Conectado a Claude. 10 gorras activas. Pica Tienda › Shopify para ver la salud de la tienda.'], ['Gmail (krashoutmxl@gmail.com)', 'ok', 'Conectado a Claude. Siguiente: mostrar aquí los correos importantes.'], ['Meta: Facebook + Instagram @krashoutco', 'a', 'Portafolio, Página e Instagram listos. Falta conectar el canal de Shopify y las respuestas automáticas.'], ['TikTok', 'no', 'Falta crear la cuenta de negocio.'], ['Supabase (sincronizar compu y cel)', 'no', 'Falta crear la cuenta gratis. Mientras, todo se guarda cifrado en este aparato.']];
   const lbl = {ok: ['Conectado', 'chip ok'], a: ['A medias', 'chip'], no: ['Sin conectar', 'chip no']};
   return h('div', null, crumbs(['Inicio', '#/'], ['Centro'], ['Conectores']), head('Conectores', 'Qué está enlazado y qué falta.'),
     h('section', {class: 'card'}, ...C.map(([n, s, d]) => h('div', {class: 'urg'}, h('span', {class: 'ub ' + (s === 'ok' ? 'g' : s === 'a' ? '' : 'n')}), h('div', null, h('h3', null, n, h('span', {class: lbl[s][1]}, lbl[s][0])), h('p', null, d))))));
