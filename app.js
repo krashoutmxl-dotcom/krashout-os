@@ -1,4 +1,4 @@
-/* Krashout OS v3
+/* Krashout OS v3.1 — + Redes (Instagram, Facebook, TikTok), tienda con envíos e inventario
    Riel con 3 bolitas → cajón → pantalla. Todo funciona dentro del software.
    Datos cifrados en el aparato (AES-GCM con llave sacada de la contraseña de Panini).
    Seguridad: nada de innerHTML; todo texto entra como nodo de texto. */
@@ -24,7 +24,7 @@ function h(tag, attrs, ...kids){
 function icon(paths){ const s = document.createElementNS(SVGNS, 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('fill', 'none'); s.setAttribute('stroke', 'currentColor'); s.setAttribute('stroke-width', '2'); s.setAttribute('stroke-linecap', 'round'); s.setAttribute('aria-hidden', 'true'); for(const d of paths){ const p = document.createElementNS(SVGNS, 'path'); p.setAttribute('d', d); s.append(p); } return s; }
 const I = {edit: ['M4 20h4L19 9l-4-4L4 16z'], x: ['M6 6l12 12M18 6 6 18'], plus: ['M12 5v14M5 12h14'], minus: ['M5 12h14'], go: ['M9 6l6 6-6 6'],
   plan: ['M5 6h14M5 12h14M5 18h9'], box: ['M4 8l8-4 8 4v8l-8 4-8-4z', 'M4 8l8 4 8-4M12 12v8'], cash: ['M3 7h18v10H3z', 'M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4'],
-  alert: ['M12 3 2 20h20z', 'M12 10v4M12 17v.5'], cart: ['M3 4h3l2 11h11l2-8H7', 'M10 19h.01M17 19h.01'], plug: ['M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0z', 'M12 17v4'], shield: ['M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z', 'M9 12l2 2 4-4']};
+  alert: ['M12 3 2 20h20z', 'M12 10v4M12 17v.5'], cart: ['M3 4h3l2 11h11l2-8H7', 'M10 19h.01M17 19h.01'], plug: ['M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0z', 'M12 17v4'], shield: ['M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z', 'M9 12l2 2 4-4'], share: ['M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', 'M8.6 13.5l6.8 4M15.4 6.5l-6.8 4']};
 
 /* ---------- Limpieza de todo lo que entra ---------- */
 const LIM = {plan: 20, obj: 40, sub: 80, inv: 500, ventas: 2000, mat: 80, txt: 120, name: 60};
@@ -162,7 +162,7 @@ let bolita = null;
 const routeTo = h_ => { if(location.hash === h_) route(); else location.hash = h_; };
 window.addEventListener('hashchange', () => { if(KEY) route(); });
 function parse(){ const p = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent); return {v: p[0] || '', a: p[1] || '', b: p[2] || ''}; }
-const BOL = {plan: ['plan', 'objs'], tienda: ['shopify', 'inventario', 'venta', 'ventas'], centro: ['urgencias', 'comprar', 'conectores', 'seguridad']};
+const BOL = {plan: ['plan', 'objs'], tienda: ['shopify', 'redes', 'inventario', 'venta', 'ventas'], centro: ['urgencias', 'comprar', 'conectores', 'seguridad']};
 const bolitaOf = v => Object.keys(BOL).find(k => BOL[k].includes(v)) || null;
 
 for(const b of document.querySelectorAll('.bolita')) b.addEventListener('click', () => {
@@ -198,6 +198,7 @@ function renderDrawer(){
     const tv = todaySales(), tt = tv.reduce((a, v) => a + v.total, 0), pz = D.inv.reduce((a, p) => a + p.stock, 0);
     dr.replaceChildren(h('h2', null, 'Tienda'), h('p', {class: 'dsub'}, 'Shopify, inventario y ventas.'),
       ditem('#/shopify', I.cart, 'Shopify', SHOP.gorras.length + ' gorras activas · ' + SHOP.ventas + ' pedidos'),
+      ditem('#/redes', I.share, 'Redes', 'Instagram · Facebook · TikTok'),
       ditem('#/inventario', I.box, 'Inventario', D.inv.length + ' productos · ' + pz + ' piezas'),
       ditem('#/venta', I.cash, 'Venta rápida', 'Menudeo y mayoreo'),
       ditem('#/ventas', I.plan, 'Ventas', 'Hoy: ' + tv.length + ' · ' + money(tt)));
@@ -206,7 +207,7 @@ function renderDrawer(){
     dr.replaceChildren(h('h2', null, 'Centro'), h('p', {class: 'dsub'}, 'Lo urgente, lo que hay que comprar y las conexiones.'),
       ditem('#/urgencias', I.alert, 'Urgencias', urgencias().filter(u => u.lvl !== 'n').length + ' cosas'),
       ditem('#/comprar', I.cart, 'Por comprar', low + ' con stock bajo · ' + D.mat.filter(m => !m.ok).length + ' material'),
-      ditem('#/conectores', I.plug, 'Conectores', 'Shopify, Gmail, Meta, TikTok'),
+      ditem('#/conectores', I.plug, 'Conectores', 'Shopify, Instagram, Facebook, TikTok'),
       ditem('#/seguridad', I.shield, 'Seguridad', 'Usuario Panini, contraseña y respaldo'));
   }
 }
@@ -218,6 +219,7 @@ function route(){
   if(v === 'plan' && a && b) view = vObj(a, b);
   else if(v === 'plan' && a) view = vPlan(a);
   else if(v === 'shopify') view = vShop();
+  else if(v === 'redes') view = vRedes();
   else if(v === 'inventario') view = vInv();
   else if(v === 'venta') view = vVenta();
   else if(v === 'ventas') view = vVentas();
@@ -239,15 +241,16 @@ const head = (title, sub, ...actions) => h('div', {class: 'ph'}, h('div', null, 
 
 /* ---------- Shopify (foto del estado tomada por Claude con el conector) ---------- */
 const SHOP = {
-  al: '26 nov 2026, 6:05 pm', tienda: 'https://myway-hats.myshopify.com', admin: 'https://admin.shopify.com/store/myway-hats',
+  al: '27 nov 2026, 1:00 pm', tienda: 'https://krashoutmxl.myshopify.com', admin: 'https://admin.shopify.com/store/krashoutmxl',
   wa: 'https://wa.me/526864306646', ventas: 0,
-  estado: [['ok', 'Tienda abierta al público', 'Sin contraseña: cualquiera entra. Diseño Opción C publicado con tu foto de portada.'],
-    ['ok', '20 piezas activas', '10 gorras $700, 7 bolsos Longchamp $1,700, 3 playeras $950 (Hellstar / Chrome Hearts).'],
-    ['ok', 'Sin compras en línea: pedidos por WhatsApp', 'Cada producto tiene botón "Pedir por WhatsApp" al 686 430 6646 con el nombre y precio.'],
-    ['ok', 'Google', 'Título y descripción para buscadores listos. Google tarda unos días en mostrarla.'],
-    ['a', 'Falta: link con nombre Krashout', 'El cambio gratis de .myshopify.com ya se usó. Opción: comprar krashouthats.com (~$17 USD el primer año).'],
-    ['no', 'Falta: stock y tallas', 'Dime cuántas piezas tienes de cada una y las tallas de las playeras.'],
-    ['no', 'Falta: ventas en vivo aquí', 'Ocupa el servicio siempre prendido (Cloudflare). Mientras, Claude actualiza esta foto.']],
+  estado: [['ok', 'Tienda abierta al público', 'Sin contraseña. Diseño Llamas (Muestra 3) con logo de metal.'],
+    ['ok', '20 piezas activas con inventario', '10 gorras $700, 7 bolsos Longchamp $1,700, 3 playeras $950. 1 pieza de cada una: al venderse se marca agotada.'],
+    ['ok', 'Envíos listos', 'Todo México: $150 · gratis desde $1,500 (3 a 7 días hábiles).'],
+    ['ok', 'Carrito + WhatsApp listos', 'Diseño "Krashout — Checkout" preparado: botón Agregar al carrito y abajo "¿Dudas? Escríbenos por WhatsApp". Se publica en cuanto actives los pagos.'],
+    ['ok', 'Redes en el pie de la tienda', 'Iconos de Facebook, Instagram y TikTok enlazados.'],
+    ['a', 'Te toca: activar pagos con tarjeta', 'Configuración › Pagos › Completar configuración (Shopify Payments). Ocupa tu RFC, INE y CLABE: eso lo escribes tú.'],
+    ['a', 'Te toca: precio de entrega a domicilio en Mexicali', 'Dime cuánto cobras (o si es gratis) y la dejo activa.'],
+    ['no', 'Falta: tallas de las playeras', 'Las 3 playeras dicen "Por confirmar". Dime las tallas antes de venderlas en línea.']],
   gorras: [{"t": "Barbas Hats x Lonche & Wilito \"Heartbreaker\"", "h": "barbas-hats-x-lonche-wilito-heartbreaker", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/heartbreaker-frente.jpg?width=160", "fotos": 3}, {"t": "Báez × Adriano Zendejas \"AB'z\"", "h": "baez-adriano-zendejas-abz", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/abz-frente.jpg?width=160", "fotos": 4}, {"t": "Báez × Adriano Zendejas \"Son of God\"", "h": "baez-adriano-zendejas-son-of-god", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/sonofgod-frente.jpg?width=160", "fotos": 1}, {"t": "Chucky Hats de terciopelo negro", "h": "chucky-hats-de-terciopelo-negro", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/chucky-34.jpg?width=160", "fotos": 2}, {"t": "Barbas Hats \"Born Crazy\"", "h": "barbas-hats-born-crazy", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/borncrazy-34.jpg?width=160", "fotos": 5}, {"t": "Gorra negra \"Ojo Azul\" con cristales", "h": "gorra-negra-ojo-azul-con-cristales", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ojoazul-34.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"FTR Camo\"", "h": "barbas-hats-ftr-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ftr-frente.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"Chrome I Blackout\"", "h": "barbas-hats-chrome-i-blackout", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/blackout-frente.jpg?width=160", "fotos": 3}, {"t": "31 Hats \"El Mago\"", "h": "31-hats-el-mago", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/elmago-frente.jpg?width=160", "fotos": 1}, {"t": "Barbas Hats \"B-Cross Camo\"", "h": "barbas-hats-b-cross-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/bcross-34.jpg?width=160", "fotos": 2}]
 };
 function vShop(){
@@ -269,6 +272,40 @@ function vShop(){
     h('section', {class: 'card'}, h('h2', {style: {'margin-bottom': '8px'}}, 'Gorras en la tienda'),
       h('div', {class: 'shopgrid'}, ...SHOP.gorras.map(g => h('a', {class: 'shopcap', href: SHOP.tienda + '/products/' + g.h, target: '_blank', rel: 'noopener noreferrer'},
         h('img', {src: g.img, alt: g.t, loading: 'lazy', width: '160', height: '160'}), h('b', null, g.t), h('small', null, '$700 · ' + g.fotos + (g.fotos === 1 ? ' foto' : ' fotos')))))));
+}
+
+/* ---------- Redes (foto del estado tomada por Claude con Windsor.ai) ---------- */
+const REDES = {
+  al: '27 nov 2026, 1:00 pm',
+  cuentas: [
+    {n: 'Instagram', u: '@krashoutco', url: 'https://www.instagram.com/krashoutco/', seg: 3, pubs: 5, extra: 'Bio con link a la tienda (cámbialo desde el cel si aún sale el viejo).'},
+    {n: 'Facebook', u: 'Página Krashout', url: 'https://www.facebook.com/profile.php?id=61597145062553', seg: 0, pubs: 4, extra: 'Sitio web: krashoutmxl.myshopify.com. Falta subir la portada.'},
+    {n: 'TikTok', u: '@krashoutco', url: 'https://www.tiktok.com/@krashoutco', seg: null, pubs: null, extra: 'Confirma tu usuario para enlazarlo bien.'},
+    {n: 'Tienda', u: 'krashoutmxl.myshopify.com', url: 'https://krashoutmxl.myshopify.com', seg: null, pubs: 20, extra: 'Catálogo con fotos y precios.'}],
+  atajos: [['Meta Business Suite', 'https://business.facebook.com/latest/home'], ['Bandeja de mensajes', 'https://business.facebook.com/latest/inbox'], ['Admin Shopify', 'https://admin.shopify.com/store/krashoutmxl'], ['WhatsApp', 'https://wa.me/526864306646']],
+  publicado: [['27 nov', 'Historias IG + FB', 'Llamas, Nubes, Mago, Camuflaje'], ['27 nov', 'Post IG + FB', 'En llamas 🔥'], ['27 nov', 'Post IG + FB', 'Arriba de las nubes ☁️'], ['27 nov', 'Post IG + FB', 'Puro truco 🎩'], ['27 nov', 'Post IG + FB', 'Camuflaje 🪖']],
+  reglas: ['No usar la palabra "original" en posts, historias ni mensajes.', 'Sin precios en posts ni mensajes: que entren al link para verlos.', 'Las imágenes solo llevan el logo y @krashoutco.', 'Antes de publicar algo, Claude te lo enseña y espera tu "sí".'],
+  bienvenida: '¡Hola! Bienvenido a Krashout 🔥\nEscoge la tuya en nuestro catálogo, ahí vienen todas las fotos y precios 👇\nkrashoutmxl.myshopify.com\nPídela directo por WhatsApp desde la página.'
+};
+function vRedes(){
+  const ext = (href, t, cls) => h('a', {class: cls || 'btn', href, target: '_blank', rel: 'noopener noreferrer'}, t);
+  const copiar = () => { (navigator.clipboard ? navigator.clipboard.writeText(REDES.bienvenida) : Promise.reject()).then(() => toast('Mensaje copiado', false), () => toast('No se pudo copiar; selecciónalo y cópialo.', false)); };
+  return h('div', null, crumbs(['Inicio', '#/'], ['Tienda'], ['Redes']),
+    head('Redes', 'Instagram, Facebook, TikTok y tienda, todo enlazado. Datos del ' + REDES.al + '.', ...REDES.atajos.slice(0, 2).map(([t, u], i) => ext(u, t, i ? 'btn' : 'btn lime'))),
+    h('div', {class: 'grid g2'}, ...REDES.cuentas.map(c => h('a', {class: 'card tile', href: c.url, target: '_blank', rel: 'noopener noreferrer'},
+      h('span', {class: 'l'}, c.n + ' · ' + c.u),
+      h('span', {class: 'v'}, c.seg == null ? (c.pubs == null ? '—' : String(c.pubs)) : String(c.seg)),
+      h('span', {class: 'l'}, c.seg == null ? (c.pubs == null ? 'Sin datos todavía' : 'productos activos') : 'seguidores · ' + c.pubs + ' publicaciones'),
+      h('small', {class: 'mut'}, c.extra)))),
+    h('div', {class: 'grid g2'},
+      h('section', {class: 'card'}, h('h2', {style: {'margin-bottom': '8px'}}, 'Lo último publicado'),
+        ...REDES.publicado.map(([f, t, d]) => h('div', {class: 'urg'}, h('span', {class: 'ub g'}), h('div', null, h('h3', null, t, h('span', {class: 'chip ok'}, f)), h('p', null, d))))),
+      h('section', {class: 'card'}, h('h2', {style: {'margin-bottom': '8px'}}, 'Reglas de Krashout'),
+        ...REDES.reglas.map(r => h('div', {class: 'urg'}, h('span', {class: 'ub'}), h('div', null, h('p', {style: {margin: 0, color: 'inherit'}}, r)))),
+        h('h2', {style: {margin: '16px 0 8px'}}, 'Mensaje de bienvenida'),
+        h('pre', {style: {'white-space': 'pre-wrap', font: 'inherit', margin: '0 0 10px', color: 'var(--soft)'}}, REDES.bienvenida),
+        h('button', {class: 'btn', type: 'button', onclick: copiar}, 'Copiar mensaje'))),
+    h('section', {class: 'card'}, h('h2', {style: {'margin-bottom': '8px'}}, 'Atajos'), h('div', {class: 'row'}, ...REDES.atajos.map(([t, u]) => ext(u, t)))));
 }
 
 /* ---------- Inicio ---------- */
@@ -468,8 +505,9 @@ function urgencias(){
   if(bolsas && dd >= 0 && bolsas.subs.some(s => !s.ok)) u.push({lvl: dd <= 7 ? 'r' : 'a', t: 'Bolsas Longchamp en Shopify antes del 1 de diciembre', d: 'Faltan ' + dd + ' días y ' + bolsas.subs.filter(s => !s.ok).length + ' pasos de Bolsas.', href: '#/plan/' + D.planes[0].id + '/bolsas'});
   for(const p of D.inv.filter(p => p.stock === 0)) u.push({lvl: 'r', t: 'Agotado: ' + pName(p), d: p.tipo === 'bolsa' ? 'Bolsa sin piezas en temporada de Navidad.' : 'Sin piezas.', href: '#/comprar'});
   const nx = nextStep(); if(nx) u.push({lvl: 'a', t: 'Siguiente paso: ' + nx.s.t, d: nx.o.nombre, href: '#/plan/' + nx.p.id + '/' + nx.o.id});
-  u.push({lvl: 'n', t: 'Pedidos de Shopify', d: 'Sin conectar: falta volver a iniciar sesión en el conector de Shopify.', href: '#/conectores'});
-  u.push({lvl: 'n', t: 'Mensajes de Messenger, Instagram y Marketplace', d: 'Sin conectar: Meta Business Suite.', href: '#/conectores'});
+  u.push({lvl: 'n', t: 'Pedidos de Shopify', d: 'Revísalos en Tienda › Shopify › ver pedidos.', href: '#/shopify'});
+  u.push({lvl: 'a', t: 'Activar pagos con tarjeta en Shopify', d: 'Configuración › Pagos › Completar configuración. Con eso se publica el carrito.', href: '#/shopify'});
+  u.push({lvl: 'n', t: 'Mensajes de Messenger e Instagram', d: 'Falta ligar MyChatBot a Messenger e Instagram.', href: '#/redes'});
   u.push({lvl: 'n', t: 'Correos importantes de krashoutmxl@gmail.com', d: 'Gmail ya está conectado a Claude; falta pasarlo al software.', href: '#/conectores'});
   return u;
 }
@@ -493,7 +531,7 @@ function vComprar(){
         h('p', {class: 'note'}, 'Esta lista es tuya. Antes de comprar algo en tu nombre te enseño qué y cuánto y espero tu "sí".'))));
 }
 function vCon(){
-  const C = [['Shopify', 'ok', 'Conectado a Claude. 10 gorras activas. Pica Tienda › Shopify para ver la salud de la tienda.'], ['Gmail (krashoutmxl@gmail.com)', 'ok', 'Conectado a Claude. Siguiente: mostrar aquí los correos importantes.'], ['Meta: Facebook + Instagram @krashoutco', 'a', 'Portafolio, Página e Instagram listos. Falta conectar el canal de Shopify y las respuestas automáticas.'], ['TikTok', 'no', 'Falta crear la cuenta de negocio.'], ['Supabase (sincronizar compu y cel)', 'no', 'Falta crear la cuenta gratis. Mientras, todo se guarda cifrado en este aparato.']];
+  const C = [['Shopify', 'ok', 'Conectado a Claude. 20 piezas activas, envíos e inventario listos. Falta que actives los pagos.'], ['Instagram @krashoutco (Windsor.ai)', 'ok', 'Claude publica posts e historias y contesta comentarios.'], ['Página de Facebook Krashout (Windsor.ai)', 'ok', 'Claude publica posts e historias. Link de la tienda en la Página.'], ['Mensajes automáticos (MyChatBot)', 'a', 'Asistente creado; falta ligar Messenger e Instagram en su panel.'], ['TikTok', 'a', 'Cuenta creada. Falta conectarla a Claude para publicar desde aquí.'], ['Gmail (krashoutmxl@gmail.com)', 'ok', 'Conectado a Claude.'], ['Supabase (sincronizar compu y cel)', 'no', 'Falta crear la cuenta gratis. Mientras, todo se guarda cifrado en este aparato.']];
   const lbl = {ok: ['Conectado', 'chip ok'], a: ['A medias', 'chip'], no: ['Sin conectar', 'chip no']};
   return h('div', null, crumbs(['Inicio', '#/'], ['Centro'], ['Conectores']), head('Conectores', 'Qué está enlazado y qué falta.'),
     h('section', {class: 'card'}, ...C.map(([n, s, d]) => h('div', {class: 'urg'}, h('span', {class: 'ub ' + (s === 'ok' ? 'g' : s === 'a' ? '' : 'n')}), h('div', null, h('h3', null, n, h('span', {class: lbl[s][1]}, lbl[s][0])), h('p', null, d))))));
