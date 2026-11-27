@@ -239,14 +239,15 @@ const head = (title, sub, ...actions) => h('div', {class: 'ph'}, h('div', null, 
 
 /* ---------- Shopify (foto del estado tomada por Claude con el conector) ---------- */
 const SHOP = {
-  al: '26 nov 2026, 5:25 pm', tienda: 'https://myway-hats.myshopify.com', admin: 'https://admin.shopify.com/store/myway-hats',
+  al: '26 nov 2026, 5:40 pm', tienda: 'https://myway-hats.myshopify.com', admin: 'https://admin.shopify.com/store/myway-hats',
   wa: 'https://wa.me/526864306646', ventas: 0,
   estado: [['ok', 'Tienda creada y conectada a Claude', 'Krashout (myway-hats). Plan Basic.'],
-    ['ok', '10 gorras activas a $700', 'Con sus fotos nuevas por ángulo, en Tienda online, Shop y Punto de venta.'],
+    ['ok', '10 gorras a $700', 'Con sus fotos nuevas por ángulo. La tienda sigue cerrada con contraseña: nadie puede comprar todavía.'],
     ['ok', 'Diseño Opción C listo', 'Tema "Copia de Horizon": Krashout is here, WhatsApp, gorras en cuadro, marcas con fotos nuevas.'],
+    ['ok', '7 bolsos Longchamp ($1,700) y 3 playeras ($950) cargados', 'En borrador: no se venden hasta que digas. Menú: Inicio, Gorras, Bolsos, Playeras (Hellstar / Chrome Hearts), Contacto.'],
     ['a', 'Falta: publicar el tema', 'Shopify no deja que Claude lo publique. Tú: Temas › Copia de Horizon › Publicar.'],
     ['a', 'Falta: quitar la contraseña de la tienda', 'Tú: Tienda online › Preferencias › quitar contraseña. Sin eso nadie puede comprar.'],
-    ['no', 'Falta: stock por gorra', 'Ahorita las gorras no cuentan piezas. Dime cuántas tienes de cada una.'],
+    ['no', 'Falta: stock y tallas', 'Dime cuántas piezas tienes de cada gorra y bolso, y las tallas de las playeras.'],
     ['no', 'Falta: ventas en vivo aquí', 'Ocupa el servicio siempre prendido (Cloudflare). Mientras, Claude actualiza esta foto.']],
   gorras: [{"t": "Barbas Hats x Lonche & Wilito \"Heartbreaker\"", "h": "barbas-hats-x-lonche-wilito-heartbreaker", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/heartbreaker-frente.jpg?width=160", "fotos": 3}, {"t": "Báez × Adriano Zendejas \"AB'z\"", "h": "baez-adriano-zendejas-abz", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/abz-frente.jpg?width=160", "fotos": 4}, {"t": "Báez × Adriano Zendejas \"Son of God\"", "h": "baez-adriano-zendejas-son-of-god", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/sonofgod-frente.jpg?width=160", "fotos": 1}, {"t": "Chucky Hats de terciopelo negro", "h": "chucky-hats-de-terciopelo-negro", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/chucky-34.jpg?width=160", "fotos": 2}, {"t": "Barbas Hats \"Born Crazy\"", "h": "barbas-hats-born-crazy", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/borncrazy-34.jpg?width=160", "fotos": 5}, {"t": "Gorra negra \"Ojo Azul\" con cristales", "h": "gorra-negra-ojo-azul-con-cristales", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ojoazul-34.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"FTR Camo\"", "h": "barbas-hats-ftr-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ftr-frente.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"Chrome I Blackout\"", "h": "barbas-hats-chrome-i-blackout", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/blackout-frente.jpg?width=160", "fotos": 3}, {"t": "31 Hats \"El Mago\"", "h": "31-hats-el-mago", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/elmago-frente.jpg?width=160", "fotos": 1}, {"t": "Barbas Hats \"B-Cross Camo\"", "h": "barbas-hats-b-cross-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/bcross-34.jpg?width=160", "fotos": 2}]
 };
