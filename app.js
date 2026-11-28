@@ -243,14 +243,12 @@ const head = (title, sub, ...actions) => h('div', {class: 'ph'}, h('div', null, 
 const SHOP = {
   al: '27 nov 2026, 1:00 pm', tienda: 'https://krashoutmxl.myshopify.com', admin: 'https://admin.shopify.com/store/krashoutmxl',
   wa: 'https://wa.me/526864306646', ventas: 0,
-  estado: [['ok', 'Tienda abierta al público', 'Sin contraseña. Diseño Llamas (Muestra 3) con logo de metal.'],
-    ['ok', '20 piezas activas con inventario', '10 gorras $700, 7 bolsos Longchamp $1,700, 3 playeras $950. 1 pieza de cada una: al venderse se marca agotada.'],
-    ['ok', 'Envíos listos', 'Todo México: $150 · gratis desde $1,500 (3 a 7 días hábiles).'],
-    ['ok', 'Carrito + WhatsApp listos', 'Diseño "Krashout — Checkout" preparado: botón Agregar al carrito y abajo "¿Dudas? Escríbenos por WhatsApp". Se publica en cuanto actives los pagos.'],
+  estado: [['ok', 'Tienda abierta al público', 'Sin contraseña. Diseño "Krashout — WhatsApp" (Llamas) con logo de metal.'],
+    ['ok', 'Todo se vende por WhatsApp', 'Sin pagos con tarjeta. Cada producto tiene "Pedir por WhatsApp" con el mensaje "vengo de la página y quiero mi descuento de $100".'],
+    ['ok', 'Descuento de $100 por pedir desde la página', 'Se lo das tú por WhatsApp cuando te llega ese mensaje.'],
+    ['ok', '20 piezas activas con inventario', '1 pieza de cada una: al venderse márcala en Shopify y sale como agotada.'],
     ['ok', 'Redes en el pie de la tienda', 'Iconos de Facebook, Instagram y TikTok enlazados.'],
-    ['a', 'Te toca: activar pagos con tarjeta', 'Configuración › Pagos › Completar configuración (Shopify Payments). Ocupa tu RFC, INE y CLABE: eso lo escribes tú.'],
-    ['a', 'Te toca: precio de entrega a domicilio en Mexicali', 'Dime cuánto cobras (o si es gratis) y la dejo activa.'],
-    ['no', 'Falta: tallas de las playeras', 'Las 3 playeras dicen "Por confirmar". Dime las tallas antes de venderlas en línea.']],
+    ['no', 'Falta: tallas de las playeras', 'Las 3 playeras dicen "Por confirmar".']],
   gorras: [{"t": "Barbas Hats x Lonche & Wilito \"Heartbreaker\"", "h": "barbas-hats-x-lonche-wilito-heartbreaker", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/heartbreaker-frente.jpg?width=160", "fotos": 3}, {"t": "Báez × Adriano Zendejas \"AB'z\"", "h": "baez-adriano-zendejas-abz", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/abz-frente.jpg?width=160", "fotos": 4}, {"t": "Báez × Adriano Zendejas \"Son of God\"", "h": "baez-adriano-zendejas-son-of-god", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/sonofgod-frente.jpg?width=160", "fotos": 1}, {"t": "Chucky Hats de terciopelo negro", "h": "chucky-hats-de-terciopelo-negro", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/chucky-34.jpg?width=160", "fotos": 2}, {"t": "Barbas Hats \"Born Crazy\"", "h": "barbas-hats-born-crazy", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/borncrazy-34.jpg?width=160", "fotos": 5}, {"t": "Gorra negra \"Ojo Azul\" con cristales", "h": "gorra-negra-ojo-azul-con-cristales", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ojoazul-34.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"FTR Camo\"", "h": "barbas-hats-ftr-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/ftr-frente.jpg?width=160", "fotos": 4}, {"t": "Barbas Hats \"Chrome I Blackout\"", "h": "barbas-hats-chrome-i-blackout", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/blackout-frente.jpg?width=160", "fotos": 3}, {"t": "31 Hats \"El Mago\"", "h": "31-hats-el-mago", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/elmago-frente.jpg?width=160", "fotos": 1}, {"t": "Barbas Hats \"B-Cross Camo\"", "h": "barbas-hats-b-cross-camo", "img": "https://cdn.shopify.com/s/files/1/1010/4465/0065/files/bcross-34.jpg?width=160", "fotos": 2}]
 };
 function vShop(){
@@ -285,7 +283,7 @@ const REDES = {
   atajos: [['Meta Business Suite', 'https://business.facebook.com/latest/home'], ['Bandeja de mensajes', 'https://business.facebook.com/latest/inbox'], ['Admin Shopify', 'https://admin.shopify.com/store/krashoutmxl'], ['WhatsApp', 'https://wa.me/526864306646']],
   publicado: [['27 nov', 'Historias IG + FB', 'Llamas, Nubes, Mago, Camuflaje'], ['27 nov', 'Post IG + FB', 'En llamas 🔥'], ['27 nov', 'Post IG + FB', 'Arriba de las nubes ☁️'], ['27 nov', 'Post IG + FB', 'Puro truco 🎩'], ['27 nov', 'Post IG + FB', 'Camuflaje 🪖']],
   reglas: ['No usar la palabra "original" en posts, historias ni mensajes.', 'Sin precios en posts ni mensajes: que entren al link para verlos.', 'Las imágenes solo llevan el logo y @krashoutco.', 'Antes de publicar algo, Claude te lo enseña y espera tu "sí".'],
-  bienvenida: '¡Hola! Bienvenido a Krashout 🔥\nEscoge la tuya en nuestro catálogo, ahí vienen todas las fotos y precios 👇\nkrashoutmxl.myshopify.com\nPídela directo por WhatsApp desde la página.'
+  bienvenida: '¡Hola! Gracias por escribirle a Krashout 🖤\n\nEn un momento te confirmamos la disponibilidad de tu pieza. Manejamos muy pocas unidades de cada modelo, así que te recomendamos apartarla pronto.\n\nMientras tanto, te invitamos a conocer nuestro catálogo completo, con fotos y existencias al día:\n👉 krashoutmxl.myshopify.com\n\nComo detalle de la casa, si nos haces tu pedido por WhatsApp desde la página, tienes $100 de descuento.\n\nGracias por tu preferencia. Quedamos atentos. 🔥'
 };
 function vRedes(){
   const ext = (href, t, cls) => h('a', {class: cls || 'btn', href, target: '_blank', rel: 'noopener noreferrer'}, t);
@@ -506,7 +504,7 @@ function urgencias(){
   for(const p of D.inv.filter(p => p.stock === 0)) u.push({lvl: 'r', t: 'Agotado: ' + pName(p), d: p.tipo === 'bolsa' ? 'Bolsa sin piezas en temporada de Navidad.' : 'Sin piezas.', href: '#/comprar'});
   const nx = nextStep(); if(nx) u.push({lvl: 'a', t: 'Siguiente paso: ' + nx.s.t, d: nx.o.nombre, href: '#/plan/' + nx.p.id + '/' + nx.o.id});
   u.push({lvl: 'n', t: 'Pedidos de Shopify', d: 'Revísalos en Tienda › Shopify › ver pedidos.', href: '#/shopify'});
-  u.push({lvl: 'a', t: 'Activar pagos con tarjeta en Shopify', d: 'Configuración › Pagos › Completar configuración. Con eso se publica el carrito.', href: '#/shopify'});
+  u.push({lvl: 'a', t: 'Tallas de las playeras', d: 'Las 3 playeras dicen Por confirmar.', href: '#/shopify'});
   u.push({lvl: 'n', t: 'Mensajes de Messenger e Instagram', d: 'Falta ligar MyChatBot a Messenger e Instagram.', href: '#/redes'});
   u.push({lvl: 'n', t: 'Correos importantes de krashoutmxl@gmail.com', d: 'Gmail ya está conectado a Claude; falta pasarlo al software.', href: '#/conectores'});
   return u;
@@ -531,7 +529,7 @@ function vComprar(){
         h('p', {class: 'note'}, 'Esta lista es tuya. Antes de comprar algo en tu nombre te enseño qué y cuánto y espero tu "sí".'))));
 }
 function vCon(){
-  const C = [['Shopify', 'ok', 'Conectado a Claude. 20 piezas activas, envíos e inventario listos. Falta que actives los pagos.'], ['Instagram @krashoutco (Windsor.ai)', 'ok', 'Claude publica posts e historias y contesta comentarios.'], ['Página de Facebook Krashout (Windsor.ai)', 'ok', 'Claude publica posts e historias. Link de la tienda en la Página.'], ['Mensajes automáticos (MyChatBot)', 'a', 'Asistente creado; falta ligar Messenger e Instagram en su panel.'], ['TikTok', 'a', 'Cuenta creada. Falta conectarla a Claude para publicar desde aquí.'], ['Gmail (krashoutmxl@gmail.com)', 'ok', 'Conectado a Claude.'], ['Supabase (sincronizar compu y cel)', 'no', 'Falta crear la cuenta gratis. Mientras, todo se guarda cifrado en este aparato.']];
+  const C = [['Shopify', 'ok', 'Conectado a Claude. 20 piezas activas; todo se pide por WhatsApp.'], ['Instagram @krashoutco (Windsor.ai)', 'ok', 'Claude publica posts e historias y contesta comentarios.'], ['Página de Facebook Krashout (Windsor.ai)', 'ok', 'Claude publica posts e historias. Link de la tienda en la Página.'], ['Mensajes automáticos (MyChatBot)', 'a', 'Asistente creado; falta ligar Messenger e Instagram en su panel.'], ['TikTok', 'a', 'Cuenta creada. Falta conectarla a Claude para publicar desde aquí.'], ['Gmail (krashoutmxl@gmail.com)', 'ok', 'Conectado a Claude.'], ['Supabase (sincronizar compu y cel)', 'no', 'Falta crear la cuenta gratis. Mientras, todo se guarda cifrado en este aparato.']];
   const lbl = {ok: ['Conectado', 'chip ok'], a: ['A medias', 'chip'], no: ['Sin conectar', 'chip no']};
   return h('div', null, crumbs(['Inicio', '#/'], ['Centro'], ['Conectores']), head('Conectores', 'Qué está enlazado y qué falta.'),
     h('section', {class: 'card'}, ...C.map(([n, s, d]) => h('div', {class: 'urg'}, h('span', {class: 'ub ' + (s === 'ok' ? 'g' : s === 'a' ? '' : 'n')}), h('div', null, h('h3', null, n, h('span', {class: lbl[s][1]}, lbl[s][0])), h('p', null, d))))));
