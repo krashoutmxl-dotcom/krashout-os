@@ -243,7 +243,7 @@ const head = (title, sub, ...actions) => h('div', {class: 'ph'}, h('div', null, 
 const SHOP = {
   al: '27 nov 2026, 1:00 pm', tienda: 'https://krashoutmxl.myshopify.com', admin: 'https://admin.shopify.com/store/krashoutmxl',
   wa: 'https://wa.me/526864306646', ventas: 0,
-  estado: [['ok', 'Tienda abierta al público', 'Sin contraseña. Diseño "Krashout — WhatsApp" (Llamas) con logo de metal.'],
+  estado: [['ok', 'Tienda abierta al público', 'Sin contraseña. Diseño Llamas con logo de metal arriba y en la portada.'],
     ['ok', 'Todo se vende por WhatsApp', 'Sin pagos con tarjeta. Cada producto tiene "Pedir por WhatsApp" con el mensaje "vengo de la página y quiero mi descuento de $100".'],
     ['ok', 'Descuento de $100 por pedir desde la página', 'Se lo das tú por WhatsApp cuando te llega ese mensaje.'],
     ['ok', '20 piezas activas con inventario', '1 pieza de cada una: al venderse márcala en Shopify y sale como agotada.'],
